@@ -6,6 +6,10 @@ if(!isset($_GET['rating'])) {
 
 $rating = $_GET['rating'];
 
+if (empty($rating)) {
+    header('Location: search.php');
+}
+
 $host = 'itp460.usc.edu';
 $dbname = 'dvd';
 $user = 'student';
@@ -28,13 +32,42 @@ $statement->execute();
 $movies = $statement->fetchAll(PDO::FETCH_OBJ);
 
 ?>
-
-<?php foreach($movies as $movie) : ?>
-    <div>
-        <?php echo $movie->title ?> of genre <?php echo $movie->genre_name ?> in <?php echo $movie->format_name ?> format with a rating of
-        <a href ="ratings.php?rating=<?php echo $movie->rating_name ?>">
-            <?php echo $movie->rating_name ?>
-        </a>
-    </div>
-    <br>
-<?php endforeach ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"  href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Format</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($movies as $movie) : ?>
+                <tr>
+                    <td><?php echo $movie->title ?></td>
+                    <td><?php echo $movie->genre_name ?></td>
+                    <td><?php echo $movie->format_name ?></td>
+                    <td>
+                        <a href ="ratings.php?rating=<?php echo $movie->rating_name ?>">
+                            <?php echo $movie->rating_name ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
